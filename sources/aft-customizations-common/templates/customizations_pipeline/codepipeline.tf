@@ -55,6 +55,22 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
   }
 
   ##############################################################
+  # Manual Approval
+  ##############################################################
+  stage {
+    name = "Manual-Approval"
+
+    action {
+      name     = "Wait-For-Approval"
+      category = "Approval"
+      owner    = "AWS"
+      provider = "Manual"
+      version  = "1"
+      run_order = 1
+    }
+  }
+
+  ##############################################################
   # Apply-AFT-Global-Customizations
   ##############################################################
 
@@ -169,6 +185,22 @@ resource "aws_codepipeline" "aft_codeconnections_customizations_codepipeline" {
     }
   }
 
+  ##############################################################
+  # Manual Approval
+  ##############################################################
+  stage {
+    name = "Manual-Approval"
+
+    action {
+      name     = "Wait-For-Approval"
+      category = "Approval"
+      owner    = "AWS"
+      provider = "Manual"
+      version  = "1"
+      run_order = 1
+    }
+  }
+  
   ##############################################################
   # Apply-AFT-Global-Customizations
   ##############################################################

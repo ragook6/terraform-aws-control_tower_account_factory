@@ -45,22 +45,6 @@ resource "aws_codepipeline" "codecommit_account_request" {
   }
 
   ##############################################################
-  # Manual Approval
-  ##############################################################
-  stage {
-    name = "Manual-Approval"
-
-    action {
-      name     = "Wait-For-Approval"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      version  = "1"
-      run_order = 1
-    }
-  }
-
-  ##############################################################
   # Apply Account Request
   ##############################################################
   stage {
@@ -171,21 +155,7 @@ resource "aws_codepipeline" "codeconnections_account_request" {
       }
     }
   }
-  ##############################################################
-  # Manual Approval
-  ##############################################################
-  stage {
-    name = "Manual-Approval"
 
-    action {
-      name     = "Wait-For-Approval"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      version  = "1"
-      run_order = 1
-    }
-  }
   ##############################################################
   # Apply Account Request
   ##############################################################
@@ -248,22 +218,6 @@ resource "aws_codepipeline" "codecommit_account_provisioning_customizations" {
         PollForSourceChanges = false
         OutputArtifactFormat = "CODE_ZIP"
       }
-    }
-  }
-
-  ##############################################################
-  # Manual Approval
-  ##############################################################
-  stage {
-    name = "Manual-Approval"
-
-    action {
-      name     = "Wait-For-Approval"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      version  = "1"
-      run_order = 1
     }
   }
 
@@ -334,22 +288,6 @@ resource "aws_codepipeline" "codeconnections_account_provisioning_customizations
         DetectChanges        = true
         OutputArtifactFormat = "CODE_ZIP"
       }
-    }
-  }
-
-  ##############################################################
-  # Manual Approval
-  ##############################################################
-  stage {
-    name = "Manual-Approval"
-
-    action {
-      name     = "Wait-For-Approval"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      version  = "1"
-      run_order = 1
     }
   }
 
