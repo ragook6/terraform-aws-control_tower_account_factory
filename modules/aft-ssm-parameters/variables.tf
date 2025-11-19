@@ -192,6 +192,7 @@ variable "aft_framework_repo_url" {
 
 variable "aft_framework_repo_git_ref" {
   type = string
+  default = "main"
 }
 
 variable "terraform_version" {
