@@ -1,6 +1,34 @@
 # Copyright Amazon.com, Inc. or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
+  ##############################################################
+  # OPA-Policy-Check Resource
+  ##############################################################
+
+  # OPA validation CodeBuild project for account customizations
+  resource "aws_codebuild_project" "opa_account_customizations" {
+    name          = "aft-opa-account-customizations"
+    service_role  = data.aws_iam_role.aft_codebuild_customizations_role.arn
+    build_timeout = 10
+
+    source {
+      type      = "CODEPIPELINE"
+      buildspec = "buildspecs/opa-validation.yml"
+    }
+
+    artifacts {
+      type = "CODEPIPELINE"
+    }
+
+    environment {
+      compute_type        = "BUILD_GENERAL1_SMALL"
+      image               = "aws/codebuild/standard:6.0"
+      type                = "LINUX_CONTAINER"
+      privileged_mode     = false
+    }
+  }
+
+
 resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
   count         = local.vcs.is_codecommit ? 1 : 0
   name          = "${var.account_id}-customizations-pipeline"
@@ -70,6 +98,7 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
     }
   }
 
+
   ##############################################################
   # Apply-AFT-Global-Customizations
   ##############################################################
@@ -96,6 +125,33 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
       }
     }
   }
+
+
+
+  ##############################################################
+  # OPA-Policy-Check Stage
+  ##############################################################
+  stage {
+    name = "OPA-Policy-Check"
+
+    action {
+      name            = "OPA-Validate"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      version         = "1"
+
+      # Must match the Source stage output for account customizations
+      input_artifacts = ["source-aft-account-customizations"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.opa_account_customizations.name
+      }
+
+      run_order = 1
+    }
+  }
+
   ##############################################################
   # Apply-AFT-Account-Customizations
   ##############################################################
