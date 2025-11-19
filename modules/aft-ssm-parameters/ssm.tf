@@ -269,7 +269,8 @@ resource "aws_ssm_parameter" "aft_framework_repo_url" {
 resource "aws_ssm_parameter" "aft_framework_repo_git_ref" {
   name  = "/aft/config/aft-pipeline-code-source/repo-git-ref"
   type  = "String"
-  value = var.aft_framework_repo_git_ref
+  value = "main"
+  overwrite = true
 }
 
 resource "aws_ssm_parameter" "aft_feature_cloudtrail_data_events" {
