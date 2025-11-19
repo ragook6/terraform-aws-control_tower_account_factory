@@ -45,3 +45,7 @@ data "aws_s3_bucket" "aft_codepipeline_customizations_bucket" {
 data "aws_ssm_parameter" "vcs_provider" {
   name = "/aft/config/vcs/provider"
 }
+---Added By Ragu
+data "aws_iam_role" "aft_codebuild_customizations_role" {
+  name = "aft-codebuild-customizations-role"
+}
