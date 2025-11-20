@@ -4,6 +4,9 @@
   ##############################################################
   # OPA-Policy-Check Resource
   ##############################################################
+  data "aws_iam_role" "aft_codebuild_customizations_role" {
+  name = "aft-codebuild-customizations-role"
+  }
 
   # OPA validation CodeBuild project for account customizations
   resource "aws_codebuild_project" "opa_account_customizations" {
