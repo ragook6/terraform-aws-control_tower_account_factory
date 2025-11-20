@@ -98,7 +98,30 @@ resource "aws_codepipeline" "aft_codecommit_customizations_codepipeline" {
     }
   }
 
+##############################################################
+  # OPA-Policy-Check Stage (CodeConnections)
+  ##############################################################
+  stage {
+    name = "OPA-Policy-Check"
 
+    action {
+      name            = "OPA-Validate"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      version         = "1"
+
+      # Same artifact as account customizations source
+      input_artifacts = ["source-aft-account-customizations"]
+
+      configuration = {
+        ProjectName = aws_codebuild_project.opa_account_customizations.name
+      }
+
+      run_order = 1
+    }
+  }
+  
   ##############################################################
   # Apply-AFT-Global-Customizations
   ##############################################################
