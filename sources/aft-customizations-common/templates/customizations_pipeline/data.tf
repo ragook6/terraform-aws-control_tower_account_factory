@@ -46,7 +46,5 @@ data "aws_ssm_parameter" "vcs_provider" {
   name = "/aft/config/vcs/provider"
 }
 
-data "aws_iam_role" "aft_codebuild_customizations_role" {
-  name = "aft-codebuild-customizations-role"
-}
+
 
