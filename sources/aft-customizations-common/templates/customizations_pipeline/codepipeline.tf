@@ -16,7 +16,7 @@
 
     source {
       type      = "CODEPIPELINE"
-      buildspec = "templates/customizations_pipeline/buildspecs/opa-validation.yml"
+      buildspec = "buildspecs/opa-validation.yml"
     }
 
     artifacts {
