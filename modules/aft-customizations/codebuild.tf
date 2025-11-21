@@ -4,13 +4,20 @@
 #####################################################
 # AFT Global Customizations Terraform
 #####################################################
+resource "time_sleep" "wait_for_iam_eventual_consistency" {
+  create_duration = "60s"
+}
+
+data "aws_iam_role" "aft_codebuild_customizations_role" {
+  name = "aft-codebuild-customizations-role"
+}
 
 resource "aws_codebuild_project" "aft_global_customizations_terraform" {
   depends_on     = [aws_cloudwatch_log_group.aft_global_customizations_terraform, time_sleep.wait_for_iam_eventual_consistency]
   name           = "aft-global-customizations-terraform"
   description    = "Job to apply Terraform provided by the customer global customizations repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
-  service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
+  service_role   = data.aws_iam_role.aft_codebuild_customizations_role.arn
   encryption_key = var.aft_kms_key_arn
 
   artifacts {
@@ -84,7 +91,7 @@ resource "aws_codebuild_project" "aft_account_customizations_terraform" {
   name           = "aft-account-customizations-terraform"
   description    = "Job to apply Terraform provided by the customer account customizations repo"
   build_timeout  = tostring(var.global_codebuild_timeout)
-  service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
+  service_role   = data.aws_iam_role.aft_codebuild_customizations_role.arn
   encryption_key = var.aft_kms_key_arn
 
   artifacts {
@@ -157,7 +164,7 @@ resource "aws_codebuild_project" "aft_create_pipeline" {
   name           = "aft-create-pipeline"
   description    = "Job to run Terraform required to create account specific customizations pipeline"
   build_timeout  = tostring(var.global_codebuild_timeout)
-  service_role   = aws_iam_role.aft_codebuild_customizations_role.arn
+  service_role   = data.aws_iam_role.aft_codebuild_customizations_role.arn
   encryption_key = var.aft_kms_key_arn
 
   artifacts {
