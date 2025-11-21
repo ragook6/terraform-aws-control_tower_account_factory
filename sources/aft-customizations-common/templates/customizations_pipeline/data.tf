@@ -38,6 +38,10 @@ data "aws_iam_role" "aft_codepipeline_customizations_role" {
   name = "aft-codepipeline-customizations-role"
 }
 
+data "aws_iam_role" "aft_codebuild_customizations_role" {
+  name = "aft-codebuild-customizations-role"
+}
+
 data "aws_s3_bucket" "aft_codepipeline_customizations_bucket" {
   bucket = "aft-customizations-pipeline-${data.aws_caller_identity.current.account_id}"
 }
@@ -46,5 +50,5 @@ data "aws_ssm_parameter" "vcs_provider" {
   name = "/aft/config/vcs/provider"
 }
 
-
+# New
 
