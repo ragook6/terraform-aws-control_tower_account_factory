@@ -24,9 +24,7 @@ resource "aws_iam_role_policy" "aft_codepipeline_customizations_policy" {
 # CodeBuild IAM Resources (EXISTING ROLE)
 ###################################################################
 
-data "aws_iam_role" "aft_codebuild_customizations_role" {
-  name = "aft-codebuild-customizations-role"
-}
+
 
 # Attach policy to existing role (optional)
 # Only include if you want Terraform to manage this role's policy.
